@@ -16,8 +16,6 @@
 		/>
 		<meta name="application-name" content="Talk" />
 		<!-- Meta data for link fetching -->
-		<meta property="og:url" content="https://tlk.li" />
-		<meta property="og:image" content="https://tlk.li/og-image.png" />
 		<meta property="og:title" content="Talk - Free group video call for the web" />
 		<meta
 			property="og:description"
@@ -35,20 +33,14 @@
 	</head>
 
 	<body>
-		<header style="background-color: #e74c3c; color: white; padding: 0.5rem">
-			Talk (tlk.li) will be discontinued from December 20, 2023. If needed, you can spin up your own server using our
-			open-source code. The source code will continue to be available under the MIT license @
-			<a href="https://github.com/vasanthv/talk" target="_blank">https://github.com/vasanthv/talk</a>. I am deeply sorry
-			for any inconvenience caused.
-		</header>
 		<main class="wrap">
 			<div id="app" class="row">
 				<h1 class="flex"><img src="favicon.svg" id="logo" /> Talk</h1>
-				<h2>A free, peer-to-peer, open-source video calling for the web.</h2>
-				<h3>No sign ups. No downloads.<br />Works in all major browsers.</h3>
+				<h2>免费、点对点、开源的网络视频通话。</h2>
+				<h3>无需注册。没有下载。<br />适用于所有主流浏览器。</h3>
 				<div class="flex">
 					<div id="roomurl">
-						<span>tlk.li/</span
+						<span>talk.justdev/</span
 						><input
 							type="text"
 							placeholder="room-name"
@@ -57,28 +49,20 @@
 							v-on:keydown.enter="goToRoom"
 						/>
 					</div>
-					<a v-bind:href="'/'+roomId" class="button">Start</a>
+					<a v-bind:href="'/'+roomId" class="button">开始畅聊</a>
 				</div>
 
-				<p><a href="javascript:void(0)" v-on:click="generateRandomRoomId">Generate a random room</a></p>
+				<p><a href="javascript:void(0)" v-on:click="generateRandomRoomId">随机生成一个房间 ID</a></p>
 			</div>
 			<div class="spacer"></div>
 			<div class="row">
-				<iframe
-					src="https://ghbtns.com/github-btn.html?user=vasanthv&repo=talk&type=star&count=true&size=large"
-					frameborder="0"
-					scrolling="0"
-					width="170"
-					height="30"
-					title="GitHub"
-				></iframe>
+				使用 WebRTC 建立视频通话，不存储在任何持久数据库中。一旦用户通过关闭浏览器窗口，服务器就会立即执行此操作。 您的聊天消息、视频和音频
+都是 100% 点对点，这意味着他们根本不会接触我们的服务器。
 			</div>
 
 			<div class="row small light">
-				&copy; tlk.li &middot; <a href="/legal">Legal</a> &middot;
-				<a href="mailto:vasanth@tlk.li" target="_blank">Contact</a>
+				&copy; <a href="/legal">使用须知</a>
 			</div>
-
 			<br /><br />
 		</main>
 	</body>
