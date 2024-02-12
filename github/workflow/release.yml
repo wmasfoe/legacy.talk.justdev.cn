@@ -1,0 +1,35 @@
+name: Deploy to Server
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Add SSH known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.ALIYUN_SERVER_HOST }} >> ~/.ssh/known_hosts
+      - name: SSH connection to server
+        uses: wmasfoe/talk@master
+        with:
+          host: ${{ secrets.ALIYUN_SERVER_HOST }}
+          username: root
+          password: ${{ secrets.ALIYUN_SERVER_ROOT_PWD }}
+          key: ${{ secrets.ALIYUN_SERVER_PRIVATE_KEY }}
+          script: |
+            mkdir ~/project
+            cd ~/project/talk
+            source ~/.nvm/nvm.sh
+            source ~/.bash_profile
+            nvm use 18
+            git pull 
+            npm i 
+            pm2 start start.js --name talk
+            pm2 reload talk

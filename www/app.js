@@ -8,7 +8,7 @@ const App = Vue.createApp({
 			peerId: "",
 			roomId: "",
 			roomLink: "",
-			copyText: "",
+			copyText: "复制房间链接",
 			userAgent: "",
 			isMobileDevice: false,
 			isTablet: false,
@@ -44,8 +44,9 @@ const App = Vue.createApp({
 		copyURL() {
 			navigator.clipboard.writeText(this.roomLink).then(
 				() => {
-					this.copyText = "Copied 👍";
-					setTimeout(() => (this.copyText = ""), 3000);
+					const oldCopyText = this.copyText;
+					this.copyText = "已复制 👍";
+					setTimeout(() => (this.copyText = oldCopyText), 3000);
 				},
 				(err) => console.error(err)
 			);
@@ -222,7 +223,7 @@ const App = Vue.createApp({
 				composeElement.textContent = "";
 				composeElement.blur;
 			} else {
-				alert("No peers in the room");
+				alert("房间现在没人");
 			}
 		},
 		sendDataMessage(key, value) {
@@ -287,19 +288,13 @@ const App = Vue.createApp({
 		setStyle(key, value) {
 			document.documentElement.style.setProperty(key, value);
 		},
-		onCallFeedback(e) {
-			try {
-				if (cabin) {
-					cabin.event(e.target.getAttribute("data-cabin-event"));
-				}
-			} catch (e) {}
-		},
 		exit() {
 			signalingSocket.close();
 			for (let peer_id in peers) {
 				peers[peer_id].close();
 			}
-			this.callEnded = true;
+			window.location.pathname = '/'
+			// this.callEnded = true;
 		},
 	},
 }).mount("#app");

@@ -265,7 +265,7 @@ function setupLocalMedia(callback, errorback) {
 		})
 		.catch(() => {
 			/* user denied access to a/v */
-			alert("This site will not work without camera/microphone access.");
+			alert("该网站需要使用您的摄像头以及麦克风，否则无法使用");
 			if (errorback) errorback();
 		});
 }
