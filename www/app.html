@@ -1,153 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-		/>
-		<meta
-			name="description"
-			content="A free, peer-to-peer, encrypted, open-source video calling for the web. No sign ups. No downloads."
-		/>
-		<meta
-			name="keywords"
-			content="group video chat, video communication, multiparty video chat, video chat, webrtc, peer to peer, p2p"
-		/>
-		<meta name="application-name" content="Talk" />
-		<!-- Meta data for link fetching -->
-		<meta property="og:url" content="https://tlk.li" />
-		<meta property="og:image" content="https://tlk.li/og-image.png" />
-		<meta property="og:title" content="Talk - Free video calling for the web" />
-		<meta
-			property="og:description"
-			content="A free, peer-to-peer, encrypted, open-source video calling for the web. No sign ups. No downloads."
-		/>
 
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-		<link rel="icon" href="/favicon.svg" />
-		<link rel="stylesheet" href="/app.css" />
-		<script defer src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-		<script defer src="/socket.io/socket.io.js"></script>
-		<script defer src="/vue.global.prod.js"></script>
-		<script defer src="app.js"></script>
-		<script defer src="webrtc.js"></script>
-		<title>Talk - Free video calling for the web</title>
-		<!-- ANALYTICS_SCRIPT -->
-	</head>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport"
+		content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="description"
+		content="A free, peer-to-peer, encrypted, open-source video calling for the web. No sign ups. No downloads." />
+	<meta name="keywords"
+		content="group video chat, video communication, multiparty video chat, video chat, webrtc, peer to peer, p2p" />
+	<meta name="application-name" content="Talk" />
+	<!-- Meta data for link fetching -->
+	<meta property="og:url" content="https://talk.justdev.cn" />
+	<meta property="og:image" content="https://talk.justdev.cn/og-image.png" />
+	<meta property="og:title" content="Talk - Free video calling for the web" />
+	<meta property="og:description"
+		content="A free, peer-to-peer, encrypted, open-source video calling for the web. No sign ups. No downloads." />
 
-	<body>
-		<!-- <header style="background-color: #e74c3c; color: white; padding: 0.5rem">
-			Talk (tlk.li) will be discontinued from December 20, 2023. If needed, you can spin up your own server using our
-			open-source code. The source code will continue to be available under the MIT license @
-			<a href="https://github.com/vasanthv/talk" target="_blank">https://github.com/vasanthv/talk</a>. I am deeply sorry
-			for any inconvenience caused.
-		</header> -->
-		<section id="blanket"></section>
-		<section id="videos"></section>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<link rel="icon" href="/favicon.svg" />
+	<link rel="stylesheet" href="/app.css" />
+	<link rel="stylesheet" href="/app.new.css" />
+	<script defer src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+	<script defer src="/socket.io/socket.io.js"></script>
+	<script defer src="/vue.global.prod.js"></script>
+	<script defer src="app.js"></script>
+	<script defer src="webrtc.js"></script>
+	<title>Talk - Free video calling for the web</title>
+	<!-- ANALYTICS_SCRIPT -->
+</head>
 
-		<main id="app">
-			<div id="appWrap" v-bind:style="'display:block;'">
-				<div id="intro" v-if="!callInitiated && !showChat && !showSettings">
-					<h3>您将要进入视频通话。</h3>
-					<p>Talk 是一个免费的、点对点的、加密的、开源的网络视频通话。</p>
-					<p>
-						<label v-bind:class="(nameError && !name ? 'red' : '')">输入你的昵称</label>
-						<input type="text" v-model="name" v-on:keyup="updateName" placeholder="Your name" />
-					</p>
-					<br />
+<body>
+	<section id="blanket"></section>
+	<section id="videos"></section>
 
-					<div class="footer">
-						<button v-on:click="initiateCall">下一步</button>
-					</div>
-				</div>
+	<main id="app">
+		<div id="appWrap" v-bind:style="'display:block;'">
+			<div id="intro" v-if="!callInitiated && !showChat && !showSettings">
+				<h3>您将要进入视频通话。</h3>
+				<p>Talk 是一个免费的、点对点的、加密的、开源的网络视频通话。</p>
+				<p>
+					<label v-bind:class="(nameError && !name ? 'red' : '')">输入你的昵称</label>
+					<input type="text" v-model="name" v-on:keyup="updateName" placeholder="Your name" />
+				</p>
+				<br />
 
-				<div id="callFeedbackWrap" v-if="callEnded">
-					<div id="callFeedback">
-						<div class="bold">您的通话已被挂断。您现在可以关闭此窗口。</div>
-						<br />
-					</div>
-				</div>
-
-				<div id="chatWrap" v-if="showChat">
-					<div id="chats" ref="chatContainer">
-						<div class="chat" v-for="(chat, i) in chats" v-bind:key="i">
-							<span class="name">{{chat.name}}</span>
-							<span class="date light"> &middot; {{formatDate(chat.date)}}</span>
-							<div class="message" v-html="linkify(chat.message)"></div>
-						</div>
-						<div id="noChat" class="light" v-if="!chats.length"><small>暂无聊天消息</small></div>
-					</div>
-					<div id="composeBox">
-						<div id="placeholder" v-if="typing.length <= 0">请输入内容</div>
-						<div
-							id="compose"
-							contenteditable="true"
-							v-on:keydown.enter="sendChat"
-							v-on:input="edit($event)"
-							v-on:paste="paste($event)"
-						></div>
-					</div>
-					<small class="light">按回车键发送</small>
-				</div>
-
-				<div id="settings" v-if="showSettings">
-					<div id="name" class="label">
-						<span>Name:</span>
-						<input type="text" placeholder="Enter your name" v-model="name" v-on:keyup="updateNameAndPublish" />
-					</div>
-					<hr class="separator" />
-
-					<div class="label">摄像头 📹</div>
-					<div v-for="(videoDevice, i) in videoDevices" v-bind:key="videoDevice.deviceId">
-						<div
-							v-bind:class="'link indent '+(selectedVideoDeviceId === videoDevice.deviceId ? 'active' : '')"
-							v-on:click="changeCamera(videoDevice.deviceId)"
-						>
-							{{videoDevice.label}}
-						</div>
-					</div>
-					<hr class="separator" />
-
-					<div class="label">麦克风 🎙️</div>
-					<div v-for="(audioDevice, i) in audioDevices" v-bind:key="audioDevice.deviceId">
-						<div
-							v-bind:class="'link indent '+(selectedAudioDeviceId === audioDevice.deviceId ? 'active' : '')"
-							v-on:click="changeMicrophone(audioDevice.deviceId)"
-						>
-							{{audioDevice.label}}
-						</div>
-					</div>
-					<hr class="separator" />
-
-					<div class="link" v-on:click="copyURL">{{copyText || "Copy room link"}}</div>
-					<hr class="separator" />
-					<div class="link" v-on:click="toggleSelfVideoMirror">
-						镜像 / 取消镜像
-					</div>
-				</div>
-
-				<div id="actionsWrap" v-if="callInitiated">
-					<div id="actions">
-						<button v-bind:class="'icon-mic'+(audioEnabled ? '' : '-off')" v-on:click="audioToggle"></button>
-						<button v-bind:class="'icon-video'+(videoEnabled ? '' : '-off')" v-on:click="videoToggle"></button>
-						<button
-							v-bind:class="'icon-message-square '+(showChat ? 'active' : '')"
-							v-on:click="showChat = !showChat"
-						></button>
-						<button
-							v-if="!isMobileDevice"
-							v-bind:class="'icon-monitor '+(screenShareEnabled ? 'active' : '')"
-							v-on:click="screenShareToggle"
-						></button>
-						<button v-bind:class="'icon-exit'" v-on:click="exit"></button>
-						<button
-							v-bind:class="'icon-more-horizontal '+(showSettings ? 'active' : '')"
-							v-on:click="showSettings = !showSettings"
-						></button>
-					</div>
+				<div class="footer">
+					<button v-on:click="initiateCall">下一步</button>
 				</div>
 			</div>
-		</main>
-	</body>
+
+			<!-- <div id="callFeedbackWrap" v-if="callEnded">
+				<div id="callFeedback">
+					<div class="bold">您的通话已被挂断。您现在可以关闭此窗口。</div>
+					<br />
+				</div>
+			</div> -->
+
+			<div id="chatWrap" v-if="showChat">
+				<div id="chats" ref="chatContainer">
+					<div class="chat" v-for="(chat, i) in chats" v-bind:key="i">
+						<span class="name">{{chat.name}}</span>
+						<span class="date light"> &middot; {{formatDate(chat.date)}}</span>
+						<div class="message" v-html="linkify(chat.message)"></div>
+					</div>
+					<div id="noChat" class="light" v-if="!chats.length"><small>暂无聊天消息</small></div>
+				</div>
+				<div id="composeBox">
+					<div class="message-input">
+						<div id="placeholder" v-if="typing.length <= 0">请输入内容</div>
+						<div id="compose" contenteditable="true" v-on:keydown.enter="sendChat" v-on:input="edit($event)"
+							v-on:paste="paste($event)"></div>
+					</div>
+					<button class="send-btn" v-on:click="sendChat">发送</button>
+				</div>
+				<small class="light">按回车键也可以发送</small>
+			</div>
+
+			<div id="settings" v-if="showSettings">
+				<div id="name" class="label">
+					<span>Name:</span>
+					<input type="text" placeholder="Enter your name" v-model="name" v-on:keyup="updateNameAndPublish" />
+				</div>
+				<hr class="separator" />
+
+				<div class="label">摄像头 📹</div>
+				<div v-for="(videoDevice, i) in videoDevices" v-bind:key="videoDevice.deviceId">
+					<div v-bind:class="'link indent '+(selectedVideoDeviceId === videoDevice.deviceId ? 'active' : '')"
+						v-on:click="changeCamera(videoDevice.deviceId)">
+						{{videoDevice.label}}
+					</div>
+				</div>
+				<hr class="separator" />
+
+				<div class="label">麦克风 🎙️</div>
+				<div v-for="(audioDevice, i) in audioDevices" v-bind:key="audioDevice.deviceId">
+					<div v-bind:class="'link indent '+(selectedAudioDeviceId === audioDevice.deviceId ? 'active' : '')"
+						v-on:click="changeMicrophone(audioDevice.deviceId)">
+						{{audioDevice.label}}
+					</div>
+				</div>
+				<hr class="separator" />
+
+				<div class="link" v-on:click="copyURL">{{copyText || "Copy room link"}}</div>
+				<hr class="separator" />
+				<div class="link" v-on:click="toggleSelfVideoMirror">
+					镜像 / 取消镜像
+				</div>
+			</div>
+
+			<div id="actionsWrap" v-if="callInitiated">
+				<div id="actions">
+					<button v-bind:class="'icon-mic'+(audioEnabled ? '' : '-off')" v-on:click="audioToggle"></button>
+					<button v-bind:class="'icon-video'+(videoEnabled ? '' : '-off')" v-on:click="videoToggle"></button>
+					<button v-bind:class="'icon-message-square '+(showChat ? 'active' : '')"
+						v-on:click="showChat = !showChat"></button>
+					<button v-if="!isMobileDevice" v-bind:class="'icon-monitor '+(screenShareEnabled ? 'active' : '')"
+						v-on:click="screenShareToggle"></button>
+					<button v-bind:class="'icon-exit'" v-on:click="exit"></button>
+					<button v-bind:class="'icon-more-horizontal '+(showSettings ? 'active' : '')"
+						v-on:click="showSettings = !showSettings"></button>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+
 </html>

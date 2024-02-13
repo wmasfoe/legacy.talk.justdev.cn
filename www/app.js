@@ -294,6 +294,8 @@ const App = Vue.createApp({
 				peers[peer_id].close();
 			}
 			window.location.pathname = '/'
+
+			location.href = `${location.origin}?room_id=${this.roomId}`
 			// this.callEnded = true;
 		},
 	},
