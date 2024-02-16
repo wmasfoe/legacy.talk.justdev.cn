@@ -40,3 +40,10 @@ to start the talk server on port 3000. Your talk instance will be running on <ht
 ### port
 
 3543
+
+## TODO
+
+[x] 首页、引导页移动端样式优化
+[] 视频页移动端样式优化
+[] 密码房
+[] 限制房间人数
