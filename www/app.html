@@ -36,17 +36,19 @@
 
 	<main id="app">
 		<div id="appWrap" v-bind:style="'display:block;'">
-			<div id="intro" v-if="!callInitiated && !showChat && !showSettings">
-				<h3>您将要进入视频通话。</h3>
-				<p>Talk 是一个免费的、点对点的、加密的、开源的网络视频通话。</p>
-				<p>
-					<label v-bind:class="(nameError && !name ? 'red' : '')">输入你的昵称</label>
-					<input type="text" v-model="name" v-on:keyup="updateName" placeholder="昵称" />
-				</p>
-				<br />
-
-				<div class="footer">
-					<button v-on:click="initiateCall">下一步</button>
+			<div class="intro-wrap">
+				<div id="intro" v-if="!callInitiated && !showChat && !showSettings">
+					<h3>您将要进入视频通话。</h3>
+					<p>Talk 是一个免费的、点对点的、加密的、开源的网络视频通话。</p>
+					<p>
+						<label v-bind:class="(nameError && !name ? 'red' : '')">输入你的昵称</label>
+						<input type="text" class="intro-name" v-model="name" v-on:keyup="updateName" placeholder="昵称" />
+					</p>
+					<br />
+	
+					<div class="footer">
+						<button v-on:click="initiateCall">下一步</button>
+					</div>
 				</div>
 			</div>
 

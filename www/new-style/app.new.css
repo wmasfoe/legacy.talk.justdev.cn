@@ -18,3 +18,28 @@
   cursor: pointer;
   background-color: thistle;
 }
+.intro-wrap {
+  max-width: 32rem;
+  padding: 1rem;
+  
+  position: fixed;
+	top: 6rem;
+	left: 0px;
+	right: 0px;
+	z-index: 100;
+	margin: auto;
+}
+@media screen and (max-width: 750px) {
+  .intro-wrap {
+    position: unset;
+    margin-top: 50%;
+    transform: translateY(-25%);
+  }
+
+  .intro-wrap #intro {
+    max-width: unset;
+  }
+}
+#intro .intro-name:focus {
+  border-color: #6549d5;
+}
