@@ -13,20 +13,20 @@
 	<!-- Meta data for link fetching -->
 	<meta property="og:url" content="https://talk.justdev.cn" />
 	<meta property="og:image" content="https://talk.justdev.cn/og-image.png" />
-	<meta property="og:title" content="Talk - Free video calling for the web" />
+	<meta property="og:title" content="Talk - 免费网络视频通话" />
 	<meta property="og:description"
 		content="A free, peer-to-peer, encrypted, open-source video calling for the web. No sign ups. No downloads." />
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 	<link rel="icon" href="/favicon.svg" />
 	<link rel="stylesheet" href="/app.css" />
-	<link rel="stylesheet" href="/app.new.css" />
+	<link rel="stylesheet" href="/new-style/app.new.css" />
 	<script defer src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 	<script defer src="/socket.io/socket.io.js"></script>
 	<script defer src="/vue.global.prod.js"></script>
 	<script defer src="app.js"></script>
 	<script defer src="webrtc.js"></script>
-	<title>Talk - Free video calling for the web</title>
+	<title>Talk - 免费网络视频通话</title>
 	<!-- ANALYTICS_SCRIPT -->
 </head>
 
@@ -41,7 +41,7 @@
 				<p>Talk 是一个免费的、点对点的、加密的、开源的网络视频通话。</p>
 				<p>
 					<label v-bind:class="(nameError && !name ? 'red' : '')">输入你的昵称</label>
-					<input type="text" v-model="name" v-on:keyup="updateName" placeholder="Your name" />
+					<input type="text" v-model="name" v-on:keyup="updateName" placeholder="昵称" />
 				</p>
 				<br />
 
@@ -49,13 +49,6 @@
 					<button v-on:click="initiateCall">下一步</button>
 				</div>
 			</div>
-
-			<!-- <div id="callFeedbackWrap" v-if="callEnded">
-				<div id="callFeedback">
-					<div class="bold">您的通话已被挂断。您现在可以关闭此窗口。</div>
-					<br />
-				</div>
-			</div> -->
 
 			<div id="chatWrap" v-if="showChat">
 				<div id="chats" ref="chatContainer">

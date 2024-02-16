@@ -1,68 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-		/>
-		<meta
-			name="description"
-			content="A free, peer-to-peer, encrypted, open-source video calling for the web. No sign ups. No downloads."
-		/>
-		<meta
-			name="keywords"
-			content="group video chat, video communication, multiparty video chat, video chat, webrtc, peer to peer, p2p"
-		/>
-		<meta name="application-name" content="Talk" />
-		<!-- Meta data for link fetching -->
-		<meta property="og:title" content="Talk - Free group video call for the web" />
-		<meta
-			property="og:description"
-			content="A free, peer-to-peer, encrypted, open-source video calling for the web. No sign ups. No downloads."
-		/>
 
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-		<link rel="icon" href="/favicon.svg" />
-		<link rel="stylesheet" href="/home.css" />
-		<title>Talk - Free group video call for the web</title>
-		<script defer src="/vue.global.prod.js"></script>
-		<script defer src="/home.js"></script>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport"
+		content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="description"
+		content="A free, peer-to-peer, encrypted, open-source video calling for the web. No sign ups. No downloads." />
+	<meta name="keywords"
+		content="group video chat, video communication, multiparty video chat, video chat, webrtc, peer to peer, p2p" />
+	<meta name="application-name" content="Talk" />
+	<!-- Meta data for link fetching -->
+	<meta property="og:title" content="Talk - 免费网络视频通话" />
+	<meta property="og:description"
+		content="A free, peer-to-peer, encrypted, open-source video calling for the web. No sign ups. No downloads." />
 
-		<!-- ANALYTICS_SCRIPT -->
-	</head>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<link rel="icon" href="/favicon.svg" />
+	<link rel="stylesheet" href="/home.css" />
+	<link rel="stylesheet" href="/new-style/home.new.css" />
+	<title>Talk - 免费网络视频通话</title>
+	<script defer src="/vue.global.prod.js"></script>
+	<script defer src="/home.js"></script>
 
-	<body>
-		<main class="wrap">
-			<div id="app" class="row">
-				<h1 class="flex"><img src="favicon.svg" id="logo" /> Talk</h1>
-				<h2>免费、点对点、开源的网络视频通话。</h2>
-				<h3>无需注册。没有下载。<br />适用于所有主流浏览器。</h3>
-				<div class="flex">
-					<div id="roomurl">
-						<span>talk.justdev/</span
-						><input
-							type="text"
-							placeholder="room-name"
-							pattern="[a-zA-Z0-9]{8}"
-							v-model="roomId"
-							v-on:keydown.enter="goToRoom"
-						/>
-					</div>
-					<a v-bind:href="'/'+roomId" class="button">开始畅聊</a>
+	<!-- ANALYTICS_SCRIPT -->
+</head>
+
+<body>
+	<main class="wrap">
+		<div id="app" class="row">
+			<h1 class="flex"><img src="favicon.svg" id="logo" />Talk</h1>
+			<h2>免费、点对点、开源的网络视频通话。</h2>
+			<h3>
+				无需注册,没有下载。
+				<br />适用于所有主流浏览器。
+			</h3>
+			<div class="flex room-id-input">
+				<div id="roomurl">
+					<span>talk.justdev/</span>
+					<input
+						type="text"
+						placeholder="room-name"
+						pattern="[a-zA-Z0-9]{8}"
+						v-model="roomId"
+						v-on:keydown.enter="goToRoom"
+					/>
 				</div>
-
-				<p><a href="javascript:void(0)" v-on:click="generateRandomRoomId">随机生成一个房间 ID</a></p>
-			</div>
-			<div class="spacer"></div>
-			<div class="row">
-				使用 WebRTC 建立视频通话，不存储在任何持久数据库中。一旦用户通过关闭浏览器窗口，服务器就会立即执行此操作。 您的聊天消息、视频和音频都是 100% 点对点，这意味着他们根本不会接触我们的服务器。
+				<a v-bind:href="'/'+roomId" class="button home-start-btn">开始</a>
 			</div>
 
-			<div class="row small light">
-				&copy; <a href="/legal">隐私政策 | 使用须知</a>
-			</div>
-			<br /><br />
-		</main>
-	</body>
+			<p><a href="javascript:void(0)" v-on:click="generateRandomRoomId">随机生成一个房间 ID</a></p>
+		</div>
+		<div class="row">
+			<p>您的聊天消息、视频和音频都是 100% 点对点，这意味着您的通话是安全的，根本不会接触我们的服务器。</p>
+			<p>使用 WebRTC 建立视频通话，不存储在任何持久的数据库中。一旦用户关闭浏览器窗口，则立即退出连接。 </p>
+		</div>
+
+		<div class="row small light">
+			&copy; <a href="/legal">隐私政策 | 使用须知</a>
+		</div>
+		<br /><br />
+	</main>
+</body>
+
 </html>

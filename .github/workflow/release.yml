@@ -1,3 +1,8 @@
+# github 发布 阿里云
+# https://juejin.cn/post/7157193707693801508
+# https://juejin.cn/post/6931318429420879879
+# https://juejin.cn/post/7264062850200698938
+
 name: Deploy to Server
 on:
   push:
@@ -19,9 +24,12 @@ jobs:
       - name: SSH connection to server
         uses: wmasfoe/talk@master
         with:
+          # aliy IP
           host: ${{ secrets.ALIYUN_SERVER_HOST }}
           username: root
+          # aliy root 用户的登录密码
           password: ${{ secrets.ALIYUN_SERVER_ROOT_PWD }}
+          # aliy 生成的 私钥，公钥在 github ssh
           key: ${{ secrets.ALIYUN_SERVER_PRIVATE_KEY }}
           script: |
             mkdir ~/project

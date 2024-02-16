@@ -72,7 +72,6 @@ label {
 	border-radius: 0.2rem;
 	box-sizing: border-box;
 	line-height: 2.7rem;
-	margin-right: 0.5rem;
 }
 #roomurl > span {
 	color: #444;
@@ -83,6 +82,7 @@ label {
 	background: none;
 	font: inherit;
 	outline: none;
+	width: 100%;
 }
 #roomurl input::placeholder {
 	color: #888;
